@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+        Dashboard - Quản lý phòng
+    </title>
+
+    {% load static %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/dashboard.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<div class="header">
+
+    <div class="logo">
+        Phòng trọ
+    </div>
+
+
+    <div class="header-right">
+
+        <a href="{% url 'room_list' %}">
+            🏠 Danh sách phòng
+        </a>
+
+        <a
+            href="{% url 'logout' %}"
+            class="logout-button"
+        >
+            🚪 Đăng xuất
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+<!-- =========================
+     PAGE HEADING
+========================= -->
+
+<div class="page-heading">
+
+    <div>
+
+        <h1>
+            DASHBOARD
+        </h1>
+
+        <p>
+            Tổng quan quản lý phòng trọ
+        </p>
+
+    </div>
+
+
+    {% if perms.rooms.add_room %}
+
+        <a
+            href="{% url 'add_room' %}"
+            class="add-button"
+        >
+            ＋ Thêm phòng
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+<!-- =========================
+     STATISTICS
+========================= -->
+
+<div class="stats-grid">
+
+
+    <!-- TOTAL -->
+
+    <div class="stat-card total-card">
+
+        <div class="stat-icon">
+            🏠
+        </div>
+
+        <div class="stat-content">
+
+            <span>
+                Tổng số phòng
+            </span>
+
+            <strong>
+                {{ total_rooms }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- AVAILABLE -->
+
+    <div class="stat-card available-card">
+
+        <div class="stat-icon">
+            🟢
+        </div>
+
+        <div class="stat-content">
+
+            <span>
+                Đang trống
+            </span>
+
+            <strong>
+                {{ available_rooms }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- RENTED -->
+
+    <div class="stat-card rented-card">
+
+        <div class="stat-icon">
+            🔑
+        </div>
+
+        <div class="stat-content">
+
+            <span>
+                Đã cho thuê
+            </span>
+
+            <strong>
+                {{ rented_rooms }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESERVED -->
+
+    <div class="stat-card reserved-card">
+
+        <div class="stat-icon">
+            📌
+        </div>
+
+        <div class="stat-content">
+
+            <span>
+                Đang giữ chỗ
+            </span>
+
+            <strong>
+                {{ reserved_rooms }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     MAIN DASHBOARD
+========================= -->
+
+<div class="main-grid">
+
+
+    <!-- ROOM STATUS -->
+
+    <div class="dashboard-box">
+
+
+        <div class="box-title">
+
+            <div>
+
+                <h2>
+                    📊 Tình trạng phòng
+                </h2>
+
+                <p>
+                    Tổng quan trạng thái hiện tại
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="status-list">
+
+
+            <div class="status-row">
+
+                <div class="status-name">
+
+                    <span class="status-dot green"></span>
+
+                    <span>
+                        Đang trống
+                    </span>
+
+                </div>
+
+                <strong>
+                    {{ available_rooms }}
+                </strong>
+
+            </div>
+
+
+            <div class="status-row">
+
+                <div class="status-name">
+
+                    <span class="status-dot red"></span>
+
+                    <span>
+                        Đã cho thuê
+                    </span>
+
+                </div>
+
+                <strong>
+                    {{ rented_rooms }}
+                </strong>
+
+            </div>
+
+
+            <div class="status-row">
+
+                <div class="status-name">
+
+                    <span class="status-dot orange"></span>
+
+                    <span>
+                        Đang giữ chỗ
+                    </span>
+
+                </div>
+
+                <strong>
+                    {{ reserved_rooms }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- CHART -->
+
+    <div class="dashboard-box chart-box">
+
+
+        <div class="box-title">
+
+            <div>
+
+                <h2>
+                    📊 Biểu đồ trạng thái phòng
+                </h2>
+
+                <p>
+                    Phân bố phòng theo tình trạng hiện tại
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-container">
+
+            <canvas id="roomStatusChart"></canvas>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     ADVANCED STATISTICS
+========================= -->
+
+<div class="advanced-grid">
+
+
+    <!-- OCCUPANCY -->
+
+    <div class="advanced-card">
+
+        <div class="advanced-icon occupancy-icon">
+            📈
+        </div>
+
+        <div class="advanced-content">
+
+            <span>
+                Tỷ lệ lấp đầy
+            </span>
+
+            <strong>
+                {{ occupancy_rate }}%
+            </strong>
+
+            <small>
+
+                {{ occupied_rooms }}
+                /
+                {{ total_rooms }}
+                phòng đang có người
+
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOTAL -->
+
+    <div class="advanced-card">
+
+        <div class="advanced-icon total-advanced-icon">
+            🏠
+        </div>
+
+        <div class="advanced-content">
+
+            <span>
+                Tổng số phòng
+            </span>
+
+            <strong>
+                {{ total_rooms }}
+            </strong>
+
+            <small>
+                Phòng đang quản lý
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- AVAILABLE -->
+
+    <div class="advanced-card">
+
+        <div class="advanced-icon available-advanced-icon">
+            🟢
+        </div>
+
+        <div class="advanced-content">
+
+            <span>
+                Phòng còn trống
+            </span>
+
+            <strong>
+                {{ available_rooms }}
+            </strong>
+
+            <small>
+                Có thể cho thuê
+            </small>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     RECENT ROOMS
+========================= -->
+
+<div class="dashboard-box recent-box">
+
+
+    <div class="box-title">
+
+        <div>
+
+            <h2>
+                🏠 Phòng mới thêm
+            </h2>
+
+            <p>
+                Những phòng được thêm gần đây
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'room_list' %}"
+            class="view-all"
+        >
+            Xem tất cả →
+        </a>
+
+    </div>
+
+
+    {% if recent_rooms %}
+
+
+        <div class="recent-list">
+
+
+            {% for room in recent_rooms %}
+
+
+                <div class="recent-item">
+
+
+                    <div class="recent-left">
+
+
+                        <div class="recent-icon">
+                            🏠
+                        </div>
+
+
+                        <div class="recent-info">
+
+                            <a
+                                href="{% url 'room_detail' room.id %}"
+                            >
+                                {{ room.name }}
+                            </a>
+
+
+                            <span>
+                                📍 {{ room.address }}
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="recent-right">
+
+
+                        <span
+                            class="
+                            recent-status
+                            status-{{ room.status }}
+                            "
+                        >
+
+                            {{ room.get_status_display }}
+
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🏠
+            </div>
+
+            <p>
+                Chưa có phòng nào.
+            </p>
+
+
+            {% if perms.rooms.add_room %}
+
+                <a href="{% url 'add_room' %}">
+                    Thêm phòng đầu tiên
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+<!-- =========================
+     QUICK ACTIONS
+========================= -->
+
+<div class="quick-actions">
+
+
+    <a
+        href="{% url 'room_list' %}"
+        class="quick-card"
+    >
+
+        <span>
+            📋
+        </span>
+
+        <div>
+
+            <strong>
+                Quản lý phòng
+            </strong>
+
+            <small>
+                Xem danh sách phòng
+            </small>
+
+        </div>
+
+    </a>
+
+
+    {% if perms.rooms.add_room %}
+
+        <a
+            href="{% url 'add_room' %}"
+            class="quick-card"
+        >
+
+            <span>
+                ➕
+            </span>
+
+            <div>
+
+                <strong>
+                    Thêm phòng
+                </strong>
+
+                <small>
+                    Tạo phòng mới
+                </small>
+
+            </div>
+
+        </a>
+
+    {% endif %}
+
+
+</div>
+
+
+</div>
+
+
+<!-- =========================
+     CHART.JS
+========================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+    const availableRooms =
+        {{ available_rooms|default:0 }};
+
+
+    const rentedRooms =
+        {{ rented_rooms|default:0 }};
+
+
+    const reservedRooms =
+        {{ reserved_rooms|default:0 }};
+
+
+    const chartElement =
+        document.getElementById(
+            'roomStatusChart'
+        );
+
+
+    if (chartElement) {
+
+        new Chart(
+            chartElement,
+            {
+
+                type: 'doughnut',
+
+                data: {
+
+                    labels: [
+                        'Đang trống',
+                        'Đã cho thuê',
+                        'Đang giữ chỗ'
+                    ],
+
+                    datasets: [
+
+                        {
+
+                            data: [
+                                availableRooms,
+                                rentedRooms,
+                                reservedRooms
+                            ],
+
+                            borderWidth: 2
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    cutout: '65%',
+
+                    plugins: {
+
+                        legend: {
+
+                            position: 'bottom',
+
+                            labels: {
+
+                                padding: 18,
+
+                                font: {
+
+                                    size: 13
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Xóa phòng</title>
+
+    {% load static %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/delete_room.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="box">
+
+
+        <h2>
+            ⚠️ XÓA PHÒNG
+        </h2>
+
+
+        <p>
+            Bạn có chắc muốn xóa phòng:
+        </p>
+
+
+        <div class="room-name">
+
+            {{ room.name }}
+
+        </div>
+
+
+        <div class="buttons">
+
+
+            <a
+                href="{% url 'room_list' %}"
+                class="button cancel-button"
+            >
+                HỦY
+            </a>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="button delete-button"
+                >
+                    XÓA PHÒNG
+                </button>
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

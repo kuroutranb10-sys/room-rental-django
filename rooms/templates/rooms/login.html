@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Đăng nhập - Quản lý phòng</title>
+
+    {% load static %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/login.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="login-page">
+
+
+    <div class="login-box">
+
+
+        <!-- LOGO -->
+
+        <div class="login-logo">
+            🏠
+        </div>
+
+
+        <h1>
+            Phòng trọ
+        </h1>
+
+
+        <p class="login-subtitle">
+            Đăng nhập hệ thống quản lý
+        </p>
+
+
+        <!-- FORM -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <input
+                type="hidden"
+                name="next"
+                value="{{ request.GET.next }}"
+            >
+
+            {% if error_message %}
+
+                <div class="login-error">
+                    ⚠️ {{ error_message }}
+                </div>
+
+            {% endif %}
+
+
+            <!-- USERNAME -->
+
+            <div class="form-group">
+
+                <label for="username">
+                    Tên đăng nhập
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Nhập tên đăng nhập"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Mật khẩu
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Nhập mật khẩu"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+                ĐĂNG NHẬP
+            </button>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

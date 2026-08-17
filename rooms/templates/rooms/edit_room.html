@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Sửa phòng</title>
+
+    {% load static %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/edit_room.css' %}"
+    >
+
+    <style>
+
+        .field-error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+
+        /* =========================
+           ẢNH PHỤ HIỆN TẠI
+        ========================= */
+
+        .current-images {
+            margin-top: 25px;
+            margin-bottom: 25px;
+
+            padding: 16px;
+
+            background: #f8f9fa;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+        }
+
+
+        .current-images-title {
+            display: block;
+
+            font-weight: bold;
+
+            font-size: 16px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .gallery {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 15px;
+        }
+
+
+        .gallery-item {
+            position: relative;
+
+            width: 200px;
+
+            height: 150px;
+
+            border-radius: 8px;
+
+            overflow: hidden;
+
+            background: #eee;
+
+            border: 1px solid #ddd;
+        }
+
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+
+        /* =========================
+           NÚT XÓA ẢNH
+        ========================= */
+
+        .delete-image-button {
+            position: absolute;
+
+            right: 8px;
+
+            bottom: 8px;
+
+            border: none;
+
+            background: #dc3545;
+
+            color: white;
+
+            padding: 7px 12px;
+
+            border-radius: 5px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 2px 5px rgba(0, 0, 0, 0.2);
+
+            transition: 0.2s;
+        }
+
+
+        .delete-image-button:hover {
+            background: #c82333;
+
+            transform: translateY(-1px);
+        }
+
+
+        .delete-image-button:disabled {
+            background: #999;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+
+        /* =========================
+           THÊM ẢNH PHỤ
+        ========================= */
+
+        .multiple-image-help {
+            display: block;
+
+            margin-top: 7px;
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           FILE INPUT
+        ========================= */
+
+        .form-group input[type="file"] {
+            width: 100%;
+
+            padding: 10px;
+
+            border: 1px dashed #bbb;
+
+            border-radius: 6px;
+
+            background: #fafafa;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .gallery {
+                display: grid;
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+
+            .gallery-item {
+                width: 100%;
+
+                height: 130px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<div class="header">
+
+    Sửa thông tin phòng
+
+</div>
+
+
+<!-- =========================
+     CONTAINER
+========================= -->
+
+<div class="container">
+
+
+    <div class="form-box">
+
+
+        <h1>
+            SỬA PHÒNG
+        </h1>
+
+
+        <!-- =========================
+             FORM SỬA PHÒNG
+        ========================= -->
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            id="edit-room-form"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- =========================
+                 LỖI CHUNG
+            ========================= -->
+
+            {% if form.non_field_errors %}
+
+                <div class="field-error">
+
+                    {% for error in form.non_field_errors %}
+
+                        ⚠️ {{ error }}
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =========================
+                 TÊN PHÒNG + ĐỊA CHỈ
+            ========================= -->
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Tên phòng
+                    </label>
+
+                    {{ form.name }}
+
+                    {% if form.name.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.name.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Địa chỉ
+                    </label>
+
+                    {{ form.address }}
+
+                    {% if form.address.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.address.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 TỈNH / PHƯỜNG
+            ========================= -->
+
+            <div class="form-row location-row">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Tỉnh/Thành phố
+                    </label>
+
+                    {{ form.city }}
+
+                    {% if form.city.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.city.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phường/Xã
+                    </label>
+
+                    {{ form.ward }}
+
+                    {% if form.ward.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.ward.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 GIÁ + DIỆN TÍCH
+            ========================= -->
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Giá phòng
+                    </label>
+
+                    {{ form.price }}
+
+                    {% if form.price.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.price.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Diện tích
+                    </label>
+
+                    {{ form.area }}
+
+                    {% if form.area.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.area.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 ĐIỆN + NƯỚC
+            ========================= -->
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Tiền điện
+                    </label>
+
+                    {{ form.electricity_price }}
+
+                    {% if form.electricity_price.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.electricity_price.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Tiền nước
+                    </label>
+
+                    {{ form.water_price }}
+
+                    {% if form.water_price.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.water_price.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 CỌC + TẦNG
+            ========================= -->
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Tiền cọc
+                    </label>
+
+                    {{ form.deposit }}
+
+                    {% if form.deposit.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.deposit.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Tầng
+                    </label>
+
+                    {{ form.floor }}
+
+                    {% if form.floor.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.floor.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 SỐ NGƯỜI + TRẠNG THÁI
+            ========================= -->
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Số người tối đa
+                    </label>
+
+                    {{ form.max_people }}
+
+                    {% if form.max_people.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.max_people.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Trạng thái
+                    </label>
+
+                    {{ form.status }}
+
+                    {% if form.status.errors %}
+
+                        <div class="field-error">
+
+                            {% for error in form.status.errors %}
+
+                                ⚠️ {{ error }}
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =========================
+                 TIỆN ÍCH
+            ========================= -->
+
+            <div class="checkbox-title">
+
+                Tiện ích
+
+            </div>
+
+
+            <div class="checkbox-group">
+
+
+                <label>
+
+                    {{ form.has_wifi }}
+
+                    📶 Wifi
+
+                </label>
+
+
+                <label>
+
+                    {{ form.has_air_conditioner }}
+
+                    ❄️ Máy lạnh
+
+                </label>
+
+
+                <label>
+
+                    {{ form.has_bed }}
+
+                    🛏️ Giường
+
+                </label>
+
+
+                <label>
+
+                    {{ form.has_tv }}
+
+                    📺 TV
+
+                </label>
+
+
+                <label>
+
+                    {{ form.has_refrigerator }}
+
+                    🧊 Tủ lạnh
+
+                </label>
+
+
+            </div>
+
+
+            <!-- =========================
+                 ẢNH CHÍNH HIỆN TẠI
+            ========================= -->
+
+            {% if room.image %}
+
+                <div class="current-image">
+
+                    <label>
+                        Hình ảnh chính hiện tại:
+                    </label>
+
+                    <br>
+
+                    <img
+                        src="{{ room.image.url }}"
+                        alt="Ảnh phòng"
+                    >
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =========================
+                 THAY ẢNH CHÍNH
+            ========================= -->
+
+            <div class="form-group">
+
+                <label>
+                    Thay hình ảnh chính
+                </label>
+
+                {{ form.image }}
+
+                {% if form.image.errors %}
+
+                    <div class="field-error">
+
+                        {% for error in form.image.errors %}
+
+                            ⚠️ {{ error }}
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- =========================
+                 ẢNH PHỤ HIỆN TẠI
+            ========================= -->
+
+            {% if room.images.exists %}
+
+                <div class="current-images">
+
+                    <span class="current-images-title">
+                        📷 Ảnh phụ hiện tại
+                    </span>
+
+
+                    <div class="gallery" id="gallery">
+
+
+                        {% for room_image in room.images.all %}
+
+
+                            <div
+                                class="gallery-item"
+                                id="room-image-{{ room_image.id }}"
+                            >
+
+
+                                <img
+                                    src="{{ room_image.image.url }}"
+                                    alt="Ảnh phụ {{ forloop.counter }}"
+                                >
+
+
+                                <button
+                                    type="button"
+                                    class="delete-image-button"
+                                    data-url="{% url 'delete_room_image' room.id room_image.id %}"
+                                    data-id="{{ room_image.id }}"
+                                >
+                                    🗑
+                                </button>
+
+
+                            </div>
+
+
+                        {% endfor %}
+
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =========================
+                 THÊM ẢNH PHỤ
+            ========================= -->
+
+            <div class="form-group">
+
+                <label>
+                    Thêm ảnh phụ
+                </label>
+
+                {{ form.images }}
+
+                <small class="multiple-image-help">
+                    Có thể chọn nhiều ảnh cùng lúc
+                </small>
+
+                {% if form.images.errors %}
+
+                    <div class="field-error">
+
+                        {% for error in form.images.errors %}
+
+                            ⚠️ {{ error }}
+
+                        {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- =========================
+                 BUTTONS
+            ========================= -->
+
+            <div class="buttons">
+
+
+                <a
+                    href="{% url 'room_list' %}"
+                    class="button back-button"
+                >
+                    ← Quay lại
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="button save-button"
+                >
+                    💾 CẬP NHẬT
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+<script src="{% static 'js/edit_room.js' %}"></script>
+
+
+</body>
+
+</html>

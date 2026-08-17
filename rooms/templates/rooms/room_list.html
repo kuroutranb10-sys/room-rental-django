@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Quản lý phòng</title>
+
+    {% load static %}
+    {% load room_filters %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/room_list.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div class="logo">
+        Phòng trọ
+    </div>
+
+</div>
+
+
+<div class="container">
+
+
+    <h1 class="title">
+        BÁN PHÒNG
+    </h1>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+
+        <form method="GET">
+
+
+            <div class="filter-grid">
+
+
+                <!-- THÀNH PHỐ -->
+
+                <div class="filter-item">
+
+                    <label>
+                        Tỉnh/Thành phố
+                    </label>
+
+
+                    <select
+                        name="city"
+                        id="filter_city"
+                    >
+
+                        <option value="">
+                            Tất cả
+                        </option>
+
+
+                        {% for city in cities %}
+
+                            <option
+                                value="{{ city.id }}"
+                                {% if selected_city == city.id|stringformat:"s" %}
+                                    selected
+                                {% endif %}
+                            >
+
+                                {{ city.name }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- PHƯỜNG / XÃ -->
+
+                <div class="filter-item">
+
+                    <label>
+                        Phường/Xã
+                    </label>
+
+
+                    <select
+                        name="ward"
+                        id="filter_ward"
+                        disabled
+                    >
+
+                        <option value="">
+                            Tất cả
+                        </option>
+
+
+                        {% for ward in wards %}
+
+                            <option
+                                value="{{ ward.id }}"
+                                data-city="{{ ward.city_id }}"
+                            >
+
+                                {{ ward.name }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- GIÁ -->
+
+                <div class="filter-item">
+
+                    <label>
+                        Giá tối đa
+                    </label>
+
+
+                    <input
+                        type="number"
+                        name="max_price"
+                        placeholder="Ví dụ: 5000000"
+                        value="{{ max_price|default:'' }}"
+                    >
+
+                </div>
+
+
+                <!-- DIỆN TÍCH -->
+
+                <div class="filter-item">
+
+                    <label>
+                        Diện tích tối thiểu
+                    </label>
+
+
+                    <input
+                        type="number"
+                        name="min_area"
+                        placeholder="Ví dụ: 30"
+                        value="{{ min_area|default:'' }}"
+                    >
+
+                </div>
+
+
+                <!-- ĐỊA CHỈ -->
+
+                <div class="filter-item">
+
+                    <label>
+                        Địa chỉ
+                    </label>
+
+
+                    <input
+                        type="text"
+                        name="address"
+                        placeholder="Nhập địa chỉ"
+                        value="{{ address|default:'' }}"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <div class="filter-buttons">
+
+
+                <button type="submit">
+                    🔍 Tìm kiếm
+                </button>
+
+
+                <a href="{% url 'room_list' %}">
+                    Xóa lọc
+                </a>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+    <!-- ROOMS -->
+
+    <div class="room-grid">
+
+
+        {% for room in rooms %}
+
+
+            <div class="room-card">
+
+
+                <!-- TÊN PHÒNG -->
+
+                <div class="room-title">
+
+                    <a
+                        href="{% url 'room_detail' room.id %}"
+                    >
+
+                        {{ room.name }}
+
+                    </a>
+
+                </div>
+
+
+                <div class="room-content">
+
+
+                    <!-- HÌNH ẢNH -->
+
+                    {% if room.image %}
+
+                        <img
+                            src="{{ room.image.url }}"
+                            class="room-image"
+                            alt="{{ room.name }}"
+                        >
+
+                    {% else %}
+
+                        <div class="room-image">
+                        </div>
+
+                    {% endif %}
+
+
+                    <!-- THÔNG TIN -->
+
+                    <div class="room-info">
+
+
+                        <!-- ĐỊA CHỈ -->
+
+                        <div>
+
+                            📍 {{ room.address }},
+                            {{ room.ward.name }},
+                            {{ room.city.name }}
+
+                        </div>
+
+
+                        <!-- GIÁ PHÒNG -->
+
+                        <div class="room-price">
+
+                            {{ room.price|money }}
+                            VNĐ/tháng
+
+                        </div>
+
+
+                        <!-- DIỆN TÍCH -->
+
+                        <div>
+
+                            📐 {{ room.area }} m²
+
+                        </div>
+
+
+                        <!-- TIỀN ĐIỆN -->
+
+                        <div>
+
+                            ⚡
+                            {{ room.electricity_price|money }}
+                            VNĐ/kWh
+
+                        </div>
+
+
+                        <!-- TIỀN NƯỚC -->
+
+                        <div>
+
+                            💧
+                            {{ room.water_price|money }}
+                            VNĐ/m³
+
+                        </div>
+
+
+                        <!-- SỐ NGƯỜI -->
+
+                        <div>
+
+                            👥
+                            {{ room.max_people }}
+                            người
+
+                        </div>
+
+
+                        <!-- TRẠNG THÁI -->
+
+                        <div>
+
+                            Trạng thái:
+
+                            <span class="room-status status-{{ room.status }}">
+
+                                {{ room.get_status_display }}
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- BOTTOM -->
+
+                <div class="room-bottom">
+
+
+                    <span>
+
+                        🏠 {{ room.floor }} tầng
+
+                    </span>
+
+
+                    <div>
+
+
+                        <a
+                            href="{% url 'edit_room' room.id %}"
+                            class="edit-button"
+                        >
+
+                            Sửa
+
+                        </a>
+
+
+                        <a
+                            href="{% url 'delete_room' room.id %}"
+                            class="delete-button"
+                        >
+
+                            Xóa
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        {% empty %}
+
+
+            <div>
+
+                Chưa có phòng nào.
+
+                Hãy vào `/admin/` để thêm phòng.
+
+            </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+</div>
+
+
+<!-- ADD ROOM BUTTON -->
+
+<a
+    href="{% url 'add_room' %}"
+    class="add-room"
+>
+
+    ＋ Thêm phòng
+
+</a>
+
+
+<script src="{% static 'js/room_list.js' %}"></script>
+
+
+</body>
+
+</html>

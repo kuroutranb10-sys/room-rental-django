@@ -1,0 +1,366 @@
+    <!DOCTYPE html>
+    <html lang="vi">
+
+    <head>
+
+        <meta charset="UTF-8">
+
+        <title>
+            Chi tiết phòng - {{ room.name }}
+        </title>
+
+        {% load static %}
+        {% load room_filters %}
+
+        <link
+            rel="stylesheet"
+            href="{% static 'css/room_detail.css' %}"
+        >
+
+    </head>
+
+
+    <body>
+
+
+    <div class="header">
+
+        <div class="logo">
+            Phòng trọ
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+
+        <div class="detail-box">
+
+
+            <h1>
+                CHI TIẾT PHÒNG
+            </h1>
+
+
+            <!-- TÊN PHÒNG -->
+
+            <div class="room-name">
+
+                {{ room.name }}
+
+            </div>
+
+
+            <!-- ẢNH + THÔNG TIN -->
+
+            <div class="main-info">
+
+
+                <div class="image-section">
+
+        <!-- =========================
+             ẢNH CHÍNH
+        ========================== -->
+
+        {% if room.image %}
+
+            <div class="main-image-wrapper">
+
+                <img
+                    src="{{ room.image.url }}"
+                    alt="{{ room.name }}"
+                    class="main-image"
+                >
+
+            </div>
+
+        {% else %}
+
+            <div class="no-image">
+                Chưa có hình ảnh
+            </div>
+
+        {% endif %}
+
+
+        <!-- =========================
+             ẢNH PHỤ
+        ========================== -->
+
+        {% if room.images.exists %}
+
+            <div class="gallery">
+
+                {% for room_image in room.images.all %}
+
+                    <div class="gallery-item">
+
+                        <img
+                            src="{{ room_image.image.url }}"
+                            alt="{{ room.name }}"
+                        >
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+                <div class="info-box">
+
+
+                    <div class="price">
+
+                        {{ room.price|money }}
+                        VNĐ/tháng
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        📐
+                        <span>Diện tích:</span>
+
+                        {{ room.area }} m²
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        🏠
+                        <span>Tầng:</span>
+
+                        {{ room.floor }}
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        👥
+                        <span>Số người tối đa:</span>
+
+                        {{ room.max_people }} người
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        📌
+                        <span>Trạng thái:</span>
+
+                        <strong class="detail-status status-{{ room.status }}">
+                            {{ room.get_status_display }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- ĐỊA CHỈ -->
+
+            <div class="section">
+
+                <h2>
+                    📍 Địa chỉ
+                </h2>
+
+
+                <div class="address">
+
+                    {{ room.address }},
+
+                    {% if room.ward %}
+                        {{ room.ward.name }},
+                    {% endif %}
+
+                    {% if room.city %}
+                        {{ room.city.name }}
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- CHI PHÍ -->
+
+            <div class="section">
+
+                <h2>
+                    💰 Chi phí
+                </h2>
+
+
+                <div class="cost-grid">
+
+
+                    <div class="cost-item">
+
+                        <span>
+                            Tiền phòng
+                        </span>
+
+                        <strong>
+                            {{ room.price|money }}
+                            VNĐ/tháng
+                        </strong>
+
+                    </div>
+
+
+                    <div class="cost-item">
+
+                        <span>
+                            Tiền điện
+                        </span>
+
+                        <strong>
+                            {{ room.electricity_price|money }}
+                            VNĐ/kWh
+                        </strong>
+
+                    </div>
+
+
+                    <div class="cost-item">
+
+                        <span>
+                            Tiền nước
+                        </span>
+
+                        <strong>
+                            {{ room.water_price|money }}
+                            VNĐ/m³
+                        </strong>
+
+                    </div>
+
+
+                    <div class="cost-item">
+
+                        <span>
+                            Tiền cọc
+                        </span>
+
+                        <strong>
+                            {{ room.deposit|money }}
+                            VNĐ
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- TIỆN ÍCH -->
+
+            <div class="section">
+
+                <h2>
+                    🛋️ Tiện ích
+                </h2>
+
+
+                <div class="amenities">
+
+
+                    {% if room.has_wifi %}
+
+                        <div class="amenity active">
+                            📶 Wifi
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if room.has_air_conditioner %}
+
+                        <div class="amenity active">
+                            ❄️ Máy lạnh
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if room.has_bed %}
+
+                        <div class="amenity active">
+                            🛏️ Giường
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if room.has_tv %}
+
+                        <div class="amenity active">
+                            📺 TV
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if room.has_refrigerator %}
+
+                        <div class="amenity active">
+                            🧊 Tủ lạnh
+                        </div>
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <div class="buttons">
+
+
+                <a
+                    href="{% url 'room_list' %}"
+                    class="button back-button"
+                >
+                    ← Quay lại
+                </a>
+
+
+                <a
+                    href="{% url 'edit_room' room.id %}"
+                    class="button edit-button"
+                >
+                    ✏️ Sửa phòng
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    </body>
+
+    </html>

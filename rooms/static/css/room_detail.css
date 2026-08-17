@@ -1,0 +1,701 @@
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #f4f6f8;
+
+    color: #222;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    height: 70px;
+
+    background: #0878e8;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 35px;
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+
+.logo {
+    font-family: Georgia, serif;
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container {
+    width: 1000px;
+
+    max-width: calc(100% - 40px);
+
+    margin: 30px auto;
+}
+
+
+/* =========================
+   DETAIL BOX
+========================= */
+
+.detail-box {
+    background: white;
+
+    padding: 35px 38px;
+
+    border-radius: 12px;
+
+    border: 1px solid #e1e5e9;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.07);
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+h1 {
+    text-align: center;
+
+    color: #0872bd;
+
+    font-size: 30px;
+
+    margin: 0 0 8px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   ROOM NAME
+========================= */
+
+.room-name {
+    text-align: center;
+
+    font-size: 27px;
+
+    font-weight: bold;
+
+    color: #0878e8;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================
+   MAIN INFO
+========================= */
+
+.main-info {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+    gap: 30px;
+
+    margin-bottom: 30px;
+}
+
+
+/* =========================
+   IMAGE SECTION
+========================= */
+
+.image-section {
+    width: 100%;
+
+    min-width: 0;
+}
+
+
+/* =========================
+   MAIN IMAGE
+========================= */
+
+.main-image-wrapper {
+    width: 100%;
+
+    height: 400px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: #f1f3f5;
+
+    border: 1px solid #e1e5e9;
+}
+
+
+.main-image {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+        transform 0.3s ease;
+}
+
+
+.main-image-wrapper:hover .main-image {
+    transform: scale(1.02);
+}
+
+
+/* =========================
+   NO IMAGE
+========================= */
+
+.no-image {
+    width: 100%;
+
+    height: 400px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f1f3f5;
+
+    color: #888;
+
+    border-radius: 10px;
+
+    border: 1px solid #e1e5e9;
+}
+
+
+/* =========================
+   GALLERY
+========================= */
+
+.gallery {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 9px;
+
+    margin-top: 12px;
+}
+
+
+.gallery-item {
+    height: 85px;
+
+    overflow: hidden;
+
+    border-radius: 7px;
+
+    background: #f1f3f5;
+
+    border: 1px solid #e1e5e9;
+
+    cursor: pointer;
+}
+
+
+.gallery-item img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+        transform 0.25s ease;
+}
+
+
+.gallery-item:hover img {
+    transform: scale(1.08);
+}
+
+
+/* =========================
+   INFORMATION
+========================= */
+
+.info-box {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 16px;
+
+    min-width: 0;
+}
+
+
+/* =========================
+   PRICE
+========================= */
+
+.price {
+    font-size: 26px;
+
+    font-weight: bold;
+
+    color: #dc3545;
+
+    margin-bottom: 10px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================
+   INFO ROW
+========================= */
+
+.info-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 12px 14px;
+
+    background: #f7f9fb;
+
+    border: 1px solid #e7ebef;
+
+    border-radius: 7px;
+
+    font-size: 16px;
+
+    line-height: 1.5;
+}
+
+
+.info-row span {
+    font-weight: bold;
+
+    color: #333;
+}
+
+
+.info-row strong {
+    color: #218838;
+}
+
+
+/* =========================
+   SECTION
+========================= */
+
+.section {
+    border-top: 1px solid #e1e5e9;
+
+    padding-top: 25px;
+
+    margin-top: 25px;
+}
+
+
+.section h2 {
+    color: #0872bd;
+
+    font-size: 21px;
+
+    margin: 0 0 16px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   ADDRESS
+========================= */
+
+.address {
+    background: #f7f9fb;
+
+    border: 1px solid #e7ebef;
+
+    border-radius: 7px;
+
+    padding: 14px 16px;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================
+   COST
+========================= */
+
+.cost-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+
+.cost-item {
+    background: #f7f9fb;
+
+    border: 1px solid #e7ebef;
+
+    padding: 15px;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.cost-item span {
+    color: #666;
+
+    font-size: 14px;
+}
+
+
+.cost-item strong {
+    color: #333;
+
+    font-size: 16px;
+}
+
+
+/* =========================
+   AMENITIES
+========================= */
+
+.amenities {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+
+.amenity {
+    padding: 11px 8px;
+
+    border-radius: 7px;
+
+    background: #f1f3f5;
+
+    color: #777;
+
+    text-align: center;
+
+    font-size: 14px;
+}
+
+
+.amenity.active {
+    background: #e8f5e9;
+
+    border: 1px solid #c8e6c9;
+
+    color: #218838;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.buttons {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-top: 35px;
+
+    padding-top: 22px;
+
+    border-top: 1px solid #e1e5e9;
+}
+
+
+.button {
+    display: inline-block;
+
+    min-width: 140px;
+
+    padding: 12px 24px;
+
+    border-radius: 7px;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    text-align: center;
+
+    color: white;
+
+    transition:
+        background 0.2s,
+        transform 0.15s,
+        box-shadow 0.2s;
+}
+
+
+.button:hover {
+    transform: translateY(-1px);
+}
+
+
+.button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.back-button {
+    background: #6c757d;
+}
+
+
+.back-button:hover {
+    background: #5c636a;
+}
+
+
+/* =========================
+   EDIT BUTTON
+========================= */
+
+.edit-button {
+    background: #0878e8;
+
+    box-shadow:
+        0 2px 6px rgba(8, 120, 232, 0.18);
+}
+
+
+.edit-button:hover {
+    background: #066dcc;
+
+    box-shadow:
+        0 4px 10px rgba(8, 120, 232, 0.22);
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 850px) {
+
+    .main-info {
+        grid-template-columns: 1fr;
+    }
+
+
+    .main-image-wrapper,
+    .no-image {
+        height: 380px;
+    }
+
+
+    .amenities {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .header {
+        height: 60px;
+
+        padding: 0 20px;
+
+        font-size: 25px;
+    }
+
+
+    .container {
+        max-width: calc(100% - 20px);
+
+        margin: 15px auto;
+    }
+
+
+    .detail-box {
+        padding: 25px 18px;
+
+        border-radius: 10px;
+    }
+
+
+    h1 {
+        font-size: 26px;
+    }
+
+
+    .room-name {
+        font-size: 23px;
+
+        margin-bottom: 25px;
+    }
+
+
+    .main-info {
+        gap: 20px;
+    }
+
+
+    .main-image-wrapper,
+    .no-image {
+        height: 280px;
+    }
+
+
+    .gallery {
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 6px;
+    }
+
+
+    .gallery-item {
+        height: 65px;
+    }
+
+
+    .price {
+        font-size: 23px;
+    }
+
+
+    .info-row {
+        font-size: 15px;
+
+        padding: 10px 12px;
+    }
+
+
+    .cost-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .amenities {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .buttons {
+        flex-direction: column-reverse;
+
+        gap: 10px;
+
+        align-items: stretch;
+    }
+
+
+    .button {
+        width: 100%;
+    }
+
+}
+
+/* =========================
+   TRẠNG THÁI PHÒNG
+========================= */
+
+.detail-status {
+    font-weight: bold;
+}
+
+
+/* ĐANG TRỐNG */
+
+.detail-status.status-available {
+    color: #28a745;
+}
+
+
+/* ĐANG GIỮ CHỖ */
+
+.detail-status.status-reserved {
+    color: #f59e0b;
+}
+
+
+/* ĐÃ CHO THUÊ */
+
+.detail-status.status-rented {
+    color: #dc3545;
+}

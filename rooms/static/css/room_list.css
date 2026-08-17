@@ -1,0 +1,776 @@
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+
+    font-family: Arial, sans-serif;
+
+    background: #f4f6f8;
+
+    color: #222;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    height: 70px;
+
+    background: #0878e8;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 35px;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.logo {
+    font-family: Georgia, serif;
+
+    font-size: 30px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.container {
+    width: 94%;
+
+    max-width: 1500px;
+
+    margin: 30px auto;
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+.title {
+    text-align: center;
+
+    color: #0872bd;
+
+    font-size: 30px;
+
+    margin: 10px 0 25px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   SEARCH BOX
+========================= */
+
+.search-box {
+    background: white;
+
+    border: 1px solid #e1e5e9;
+
+    border-radius: 12px;
+
+    padding: 22px;
+
+    margin-bottom: 30px;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================
+   FILTER GRID
+========================= */
+
+.filter-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    column-gap: 20px;
+
+    row-gap: 18px;
+
+    width: 100%;
+}
+
+
+.filter-item {
+    display: flex;
+
+    flex-direction: column;
+
+    width: 100%;
+
+    min-width: 0;
+}
+
+
+/* DIỆN TÍCH */
+
+.filter-item:nth-child(4) {
+    grid-column: 1;
+}
+
+
+/* ĐỊA CHỈ */
+
+.filter-item:nth-child(5) {
+    grid-column: 2 / 4;
+}
+
+
+.filter-item label {
+    font-size: 15px;
+
+    font-weight: bold;
+
+    color: #0872bd;
+
+    margin-bottom: 7px;
+}
+
+
+.filter-item select,
+.filter-item input {
+    width: 100%;
+
+    height: 44px;
+
+    border: 1px solid #d0d5da;
+
+    border-radius: 7px;
+
+    padding: 0 12px;
+
+    font-size: 15px;
+
+    background: white;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.filter-item select:focus,
+.filter-item input:focus {
+    border-color: #087bea;
+
+    box-shadow:
+        0 0 0 3px rgba(8, 123, 234, 0.12);
+}
+
+
+/* =========================
+   FILTER BUTTONS
+========================= */
+
+.filter-buttons {
+    margin-top: 20px;
+
+    display: flex;
+
+    gap: 10px;
+}
+
+
+.filter-buttons button {
+    background: #0878e8;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 7px;
+
+    padding: 11px 25px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+
+.filter-buttons button:hover {
+    background: #066dcc;
+
+    transform: translateY(-1px);
+}
+
+
+.filter-buttons a {
+    display: inline-flex;
+
+    align-items: center;
+
+    background: #6c757d;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 7px;
+
+    padding: 11px 25px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+
+.filter-buttons a:hover {
+    background: #5c636a;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   ROOM GRID
+========================= */
+
+.room-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 24px;
+}
+
+
+/* =========================
+   ROOM CARD
+========================= */
+
+.room-card {
+    background: white;
+
+    border: 1px solid #e1e5e9;
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.07);
+
+    min-width: 0;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.room-card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 7px 20px rgba(0, 0, 0, 0.11);
+}
+
+
+/* =========================
+   ROOM TITLE
+========================= */
+
+.room-title {
+    text-align: center;
+
+    font-size: 21px;
+
+    font-weight: bold;
+
+    margin-bottom: 16px;
+}
+
+
+.room-title a {
+    color: #0872bd;
+
+    text-decoration: none;
+
+    transition: color 0.2s;
+}
+
+
+.room-title a:hover {
+    color: #005fa3;
+
+    text-decoration: underline;
+}
+
+
+/* =========================
+   ROOM CONTENT
+========================= */
+
+.room-content {
+    display: flex;
+
+    gap: 18px;
+
+    align-items: flex-start;
+}
+
+
+/* =========================
+   ROOM IMAGE
+========================= */
+
+.room-image {
+    width: 190px;
+
+    height: 145px;
+
+    flex-shrink: 0;
+
+    object-fit: cover;
+
+    border-radius: 8px;
+
+    background: #edf0f2;
+
+    transition:
+        transform 0.25s;
+}
+
+
+.room-card:hover .room-image {
+    transform: scale(1.02);
+}
+
+
+/* =========================
+   ROOM INFO
+========================= */
+
+.room-info {
+    flex: 1;
+
+    min-width: 0;
+
+    font-size: 14px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================
+   ADDRESS
+========================= */
+
+.room-address {
+    font-size: 14px;
+
+    color: #444;
+
+    line-height: 1.6;
+
+    margin: 2px 0 8px;
+}
+
+
+/* =========================
+   PRICE
+========================= */
+
+.room-price {
+    color: #e53935;
+
+    font-size: 19px;
+
+    font-weight: bold;
+
+    margin: 5px 0 8px;
+}
+
+
+/* =========================
+   ROOM INFORMATION
+========================= */
+
+.room-info > div {
+    margin-bottom: 3px;
+}
+
+/* =========================
+   TRẠNG THÁI PHÒNG
+========================= */
+
+.room-status {
+    display: inline-block;
+
+    padding: 5px 11px;
+
+    border-radius: 20px;
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* ĐANG TRỐNG */
+
+.status-available {
+    background: #28a745;
+
+    box-shadow:
+        0 2px 5px
+        rgba(40, 167, 69, 0.25);
+}
+
+
+/* ĐANG GIỮ CHỖ */
+
+.status-reserved {
+    background: #f59e0b;
+
+    box-shadow:
+        0 2px 5px
+        rgba(245, 158, 11, 0.25);
+}
+
+
+/* ĐÃ CHO THUÊ */
+
+.status-rented {
+    background: #dc3545;
+
+    box-shadow:
+        0 2px 5px
+        rgba(220, 53, 69, 0.25);
+}
+
+
+/* =========================
+   ROOM BOTTOM
+========================= */
+
+.room-bottom {
+    border-top: 1px solid #edf0f2;
+
+    margin-top: 17px;
+
+    padding-top: 13px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.room-bottom > span {
+    color: #555;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   BUTTON GROUP
+========================= */
+
+.room-bottom > div {
+    display: flex;
+
+    gap: 8px;
+}
+
+
+/* =========================
+   EDIT BUTTON
+========================= */
+
+.edit-button {
+    display: inline-block;
+
+    background: #ffc107;
+
+    color: #222;
+
+    padding: 7px 15px;
+
+    text-decoration: none;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+
+.edit-button:hover {
+    background: #e0a800;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   DELETE BUTTON
+========================= */
+
+.delete-button {
+    display: inline-block;
+
+    background: #dc3545;
+
+    color: white;
+
+    padding: 7px 15px;
+
+    text-decoration: none;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+
+.delete-button:hover {
+    background: #c82333;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   ADD ROOM
+========================= */
+
+.add-room {
+    position: fixed;
+
+    right: 30px;
+
+    bottom: 30px;
+
+    background: #0878e8;
+
+    color: white;
+
+    text-decoration: none;
+
+    padding: 14px 23px;
+
+    border-radius: 30px;
+
+    font-weight: bold;
+
+    font-size: 15px;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.25);
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+
+.add-room:hover {
+    background: #066dcc;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1000px) {
+
+    .room-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================
+   TABLET FILTER
+========================= */
+
+@media (max-width: 900px) {
+
+    .filter-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        column-gap: 15px;
+
+        row-gap: 15px;
+    }
+
+
+    .filter-item:nth-child(4) {
+        grid-column: 1;
+    }
+
+
+    .filter-item:nth-child(5) {
+        grid-column: 2;
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .header {
+        height: 60px;
+
+        padding: 0 20px;
+    }
+
+
+    .logo {
+        font-size: 25px;
+    }
+
+
+    .container {
+        width: 92%;
+
+        margin: 20px auto;
+    }
+
+
+    .title {
+        font-size: 24px;
+    }
+
+
+    .search-box {
+        padding: 16px;
+    }
+
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+
+    .filter-item:nth-child(4),
+    .filter-item:nth-child(5) {
+        grid-column: auto;
+    }
+
+
+    .filter-buttons {
+        flex-direction: column;
+    }
+
+
+    .filter-buttons button,
+    .filter-buttons a {
+        justify-content: center;
+
+        width: 100%;
+    }
+
+
+    .room-content {
+        flex-direction: column;
+    }
+
+
+    .room-image {
+        width: 100%;
+
+        height: 220px;
+    }
+
+
+    .room-bottom {
+        flex-direction: column;
+
+        gap: 12px;
+
+        align-items: stretch;
+    }
+
+
+    .room-bottom > div {
+        width: 100%;
+    }
+
+
+    .edit-button,
+    .delete-button {
+        flex: 1;
+
+        text-align: center;
+    }
+
+
+    .add-room {
+        right: 15px;
+
+        bottom: 15px;
+
+        padding: 12px 18px;
+    }
+
+}
