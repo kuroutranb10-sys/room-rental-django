@@ -1,46 +1,31 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    const citySelect =
-        document.getElementById('id_city');
+    /* =====================================================
+       CITY → WARD
+       ===================================================== */
 
-    const wardSelect =
-        document.getElementById('id_ward');
+    const citySelect = document.getElementById('id_city');
+    const wardSelect = document.getElementById('id_ward');
 
-
-    if (!citySelect || !wardSelect) {
-
-        console.error(
-            'Không tìm thấy city hoặc ward.'
-        );
-
-        return;
-    }
-
-
-    // =========================
-    // RESET PHƯỜNG/XÃ
-    // =========================
 
     function resetWard() {
 
-        wardSelect.innerHTML =
-            '<option value="">---------</option>';
+        if (!wardSelect) {
+            return;
+        }
 
+        wardSelect.innerHTML = '<option value="">---------</option>';
         wardSelect.disabled = true;
     }
 
 
-    // =========================
-    // LOAD PHƯỜNG/XÃ
-    // =========================
+    function loadWards(cityId, selectedWardId = '') {
 
-    function loadWards(
-        cityId,
-        selectedWardId = ''
-    ) {
+        if (!wardSelect) {
+            return;
+        }
 
         resetWard();
-
 
         if (!cityId) {
             return;
@@ -50,378 +35,405 @@ document.addEventListener('DOMContentLoaded', function () {
         wardSelect.disabled = false;
 
 
-        fetch(
-            `/rooms/api/wards/?city_id=${cityId}`
-        )
+        fetch(`/rooms/api/wards/?city_id=${encodeURIComponent(cityId)}`)
 
-        .then(response => {
+            .then(function (response) {
 
-            if (!response.ok) {
+                if (!response.ok) {
+                    throw new Error(
+                        'Không thể lấy danh sách phường/xã.'
+                    );
+                }
 
-                throw new Error(
-                    'Không thể lấy danh sách phường/xã'
+                return response.json();
+            })
+
+
+            .then(function (data) {
+
+                data.forEach(function (ward) {
+
+                    const option =
+                        document.createElement('option');
+
+                    option.value = ward.id;
+                    option.textContent = ward.name;
+
+                    wardSelect.appendChild(option);
+                });
+
+
+                /*
+                 * Nếu đang sửa phòng,
+                 * chọn lại phường hiện tại.
+                 */
+                if (selectedWardId) {
+                    wardSelect.value = selectedWardId;
+                }
+
+            })
+
+
+            .catch(function (error) {
+
+                console.error(
+                    'Lỗi lấy danh sách phường/xã:',
+                    error
                 );
 
-            }
+                wardSelect.innerHTML =
+                    '<option value="">Không thể tải dữ liệu</option>';
 
-            return response.json();
-
-        })
-
-        .then(data => {
-
-            data.forEach(function (ward) {
-
-                const option =
-                    document.createElement('option');
-
-
-                option.value =
-                    ward.id;
-
-
-                option.textContent =
-                    ward.name;
-
-
-                wardSelect.appendChild(option);
-
+                wardSelect.disabled = true;
             });
-
-
-            // =========================
-            // KHÔI PHỤC PHƯỜNG CŨ
-            // =========================
-
-            if (selectedWardId) {
-
-                wardSelect.value =
-                    selectedWardId;
-
-            }
-
-        })
-
-        .catch(error => {
-
-            console.error(
-                'Lỗi lấy phường/xã:',
-                error
-            );
-
-        });
-
     }
 
 
-    // =========================
-    // KHI ĐỔI TỈNH
-    // =========================
+    if (citySelect && wardSelect) {
 
-    citySelect.addEventListener(
-        'change',
-        function () {
+        /*
+         * Khi người dùng thay đổi thành phố
+         */
+        citySelect.addEventListener(
+            'change',
+            function () {
 
-            const cityId =
-                this.value;
+                const cityId = this.value;
 
-
-            // Nếu người dùng đổi tỉnh
-            // thì phải bỏ phường cũ
-
-            loadWards(
-                cityId
-            );
-
-        }
-    );
-
-
-    // =========================
-    // KHỞI TẠO EDIT
-    // =========================
-
-    const cityId =
-        citySelect.value;
-
-    const selectedWardId =
-        wardSelect.value;
-
-
-    if (cityId) {
-
-        loadWards(
-            cityId,
-            selectedWardId
+                /*
+                 * Không truyền selectedWardId
+                 * vì đây là thành phố mới.
+                 */
+                loadWards(cityId);
+            }
         );
 
-    } else {
 
-        resetWard();
-
-    }
-
-});
-
-// =========================
-// ĐỊNH DẠNG TIỀN
-// =========================
-
-const moneyFields = [
-    document.getElementById('id_price'),
-    document.getElementById('id_electricity_price'),
-    document.getElementById('id_water_price'),
-    document.getElementById('id_deposit')
-];
+        /*
+         * Khi mở trang edit
+         */
+        const cityId = citySelect.value;
+        const selectedWardId = wardSelect.value;
 
 
-moneyFields.forEach(function (input) {
+        if (cityId) {
 
-    if (!input) {
-        return;
+            loadWards(
+                cityId,
+                selectedWardId
+            );
+
+        } else {
+
+            resetWard();
+        }
     }
 
 
-    input.addEventListener('input', function () {
+    /* =====================================================
+       MONEY FORMAT
+       ===================================================== */
 
-        let value =
-            this.value.replace(/\D/g, '');
+    const moneyFields = [
+        document.getElementById('id_price'),
+        document.getElementById('id_electricity_price'),
+        document.getElementById('id_water_price'),
+        document.getElementById('id_deposit')
+    ];
+
+
+    /*
+     * Định dạng tiền:
+     *
+     * 1500000
+     *      ↓
+     * 1.500.000
+     */
+    function formatMoney(input) {
+
+        if (!input) {
+            return;
+        }
+
+
+        let value = input.value.replace(/\D/g, '');
 
 
         if (value) {
 
-            this.value =
+            input.value =
                 Number(value).toLocaleString('vi-VN');
 
         } else {
 
-            this.value = '';
+            input.value = '';
+        }
+    }
 
+
+    /*
+     * Định dạng ngay khi mở trang edit.
+     *
+     * Ví dụ database có:
+     *
+     * 1500000
+     *
+     * thì giao diện sẽ hiện:
+     *
+     * 1.500.000
+     */
+    moneyFields.forEach(function (input) {
+
+        if (!input) {
+            return;
         }
 
-    });
 
-});
-
-
-// =========================
-// TRƯỚC KHI SUBMIT
-// =========================
-
-const form =
-    document.querySelector('form');
+        formatMoney(input);
 
 
-if (form) {
+        input.addEventListener(
+            'input',
+            function () {
 
-    form.addEventListener('submit', function () {
-
-        moneyFields.forEach(function (input) {
-
-            if (!input) {
-                return;
+                formatMoney(this);
             }
-
-
-            input.value =
-                input.value.replace(/\./g, '');
-
-        });
-
+        );
     });
 
-}
 
-/*
- * ============================================
- * XÓA ẢNH PHỤ
- * ============================================
- */
+    /* =====================================================
+       FORM SUBMIT
+       ===================================================== */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        const deleteButtons =
-            document.querySelectorAll(
-                ".delete-image-button"
-            );
+    const form =
+        document.getElementById('edit-room-form');
 
 
-        deleteButtons.forEach(
-            function (button) {
+    if (form) {
 
-                button.addEventListener(
-                    "click",
-                    function () {
+        form.addEventListener(
+            'submit',
+            function () {
 
-                        const imageId =
-                            this.dataset.id;
+                /*
+                 * Trước khi gửi form:
+                 *
+                 * 1.500.000
+                 *      ↓
+                 * 1500000
+                 */
+                moneyFields.forEach(
+                    function (input) {
 
-                        const deleteUrl =
-                            this.dataset.url;
-
-
-                        const confirmed =
-                            confirm(
-                                "Bạn có chắc muốn xóa ảnh phụ này không?"
-                            );
-
-
-                        if (!confirmed) {
+                        if (!input) {
                             return;
                         }
 
-
-                        /*
-                         * Khóa nút trong lúc xóa
-                         */
-
-                        button.disabled = true;
-
-                        button.innerText =
-                            "Đang xóa...";
-
-
-                        /*
-                         * Lấy CSRF TOKEN
-                         */
-
-                        const csrfToken =
-                            document.querySelector(
-                                "[name=csrfmiddlewaretoken]"
-                            ).value;
-
-
-                        /*
-                         * Gửi yêu cầu POST
-                         */
-
-                        fetch(
-                            deleteUrl,
-                            {
-                                method: "POST",
-
-                                headers: {
-                                    "X-CSRFToken":
-                                        csrfToken,
-
-                                    "X-Requested-With":
-                                        "XMLHttpRequest"
-                                }
-                            }
-                        )
-
-
-                        .then(
-                            function (response) {
-
-                                if (!response.ok) {
-
-                                    throw new Error(
-                                        "Không thể xóa ảnh"
-                                    );
-
-                                }
-
-                                return response.json();
-
-                            }
-                        )
-
-
-                        .then(
-                            function (data) {
-
-                                if (data.success) {
-
-                                    /*
-                                     * Xóa ảnh khỏi giao diện
-                                     */
-
-                                    const imageElement =
-                                        document.getElementById(
-                                            "room-image-" +
-                                            imageId
-                                        );
-
-
-                                    if (imageElement) {
-
-                                        imageElement.remove();
-
-                                    }
-
-
-                                    /*
-                                     * Nếu không còn ảnh phụ
-                                     */
-
-                                    const gallery =
-                                        document.getElementById(
-                                            "gallery"
-                                        );
-
-
-                                    if (
-                                        gallery &&
-                                        gallery.children.length === 0
-                                    ) {
-
-                                        const box =
-                                            gallery.closest(
-                                                ".current-images"
-                                            );
-
-                                        if (box) {
-                                            box.remove();
-                                        }
-
-                                    }
-
-                                } else {
-
-                                    alert(
-                                        data.message ||
-                                        "Không thể xóa ảnh."
-                                    );
-
-
-                                    button.disabled = false;
-
-                                    button.innerText =
-                                        "🗑 Xóa";
-
-                                }
-
-                            }
-                        )
-
-
-                        .catch(
-                            function (error) {
-
-                                console.error(error);
-
-
-                                alert(
-                                    "Có lỗi xảy ra khi xóa ảnh."
-                                );
-
-
-                                button.disabled = false;
-
-                                button.innerText =
-                                    "🗑 Xóa";
-
-                            }
-                        );
-
+                        input.value =
+                            input.value.replace(/\./g, '');
                     }
                 );
-
             }
         );
-
     }
-);
+
+
+    /* =====================================================
+       DELETE SECONDARY IMAGE
+       ===================================================== */
+
+    const deleteButtons =
+        document.querySelectorAll(
+            '.delete-image-button'
+        );
+
+
+    deleteButtons.forEach(function (button) {
+
+        button.addEventListener(
+            'click',
+            function () {
+
+                const imageId =
+                    this.dataset.id;
+
+                const deleteUrl =
+                    this.dataset.url;
+
+
+                /*
+                 * Xác nhận trước khi xóa
+                 */
+                const confirmed =
+                    confirm(
+                        'Bạn có chắc muốn xóa ảnh phụ này không?'
+                    );
+
+
+                if (!confirmed) {
+                    return;
+                }
+
+
+                /*
+                 * Disable button trong lúc xử lý
+                 */
+                button.disabled = true;
+                button.innerText = '...';
+
+
+                /*
+                 * Lấy CSRF token
+                 */
+                const csrfInput =
+                    document.querySelector(
+                        '[name=csrfmiddlewaretoken]'
+                    );
+
+
+                if (!csrfInput) {
+
+                    console.error(
+                        'Không tìm thấy CSRF token.'
+                    );
+
+                    alert(
+                        'Không thể thực hiện thao tác.'
+                    );
+
+                    button.disabled = false;
+                    button.innerText = '🗑';
+
+                    return;
+                }
+
+
+                const csrfToken =
+                    csrfInput.value;
+
+
+                /*
+                 * Gửi request POST
+                 */
+                fetch(deleteUrl, {
+
+                    method: 'POST',
+
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+
+
+                .then(function (response) {
+
+                    /*
+                     * Backend có thể trả về 403
+                     * nếu user không có quyền.
+                     */
+                    if (response.status === 403) {
+
+                        throw new Error(
+                            'Bạn không có quyền xóa ảnh này.'
+                        );
+                    }
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            'Không thể xóa ảnh.'
+                        );
+                    }
+
+
+                    return response.json();
+                })
+
+
+                .then(function (data) {
+
+                    if (!data.success) {
+
+                        throw new Error(
+                            data.message ||
+                            'Không thể xóa ảnh.'
+                        );
+                    }
+
+
+                    /*
+                     * Tìm gallery-item tương ứng
+                     */
+                    const imageElement =
+                        document.getElementById(
+                            'room-image-' + imageId
+                        );
+
+
+                    /*
+                     * Xóa khỏi giao diện
+                     */
+                    if (imageElement) {
+
+                        imageElement.remove();
+                    }
+
+
+                    /*
+                     * Nếu không còn ảnh phụ
+                     * thì xóa luôn khu vực gallery.
+                     */
+                    const gallery =
+                        document.getElementById(
+                            'gallery'
+                        );
+
+
+                    if (
+                        gallery &&
+                        gallery.children.length === 0
+                    ) {
+
+                        const currentImages =
+                            gallery.closest(
+                                '.current-images'
+                            );
+
+
+                        if (currentImages) {
+
+                            currentImages.remove();
+                        }
+                    }
+
+                })
+
+
+                .catch(function (error) {
+
+                    console.error(
+                        'Lỗi xóa ảnh:',
+                        error
+                    );
+
+
+                    alert(
+                        error.message ||
+                        'Có lỗi xảy ra khi xóa ảnh.'
+                    );
+
+
+                    /*
+                     * Khôi phục button
+                     */
+                    button.disabled = false;
+                    button.innerText = '🗑';
+                });
+            }
+        );
+    }
+
+});

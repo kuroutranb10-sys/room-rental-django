@@ -1,42 +1,30 @@
-<!DOCTYPE html>
-<html lang="vi">
+{% extends 'rooms/base.html' %}
 
-<head>
+{% load static %}
+{% load room_filters %}
+{% block title %}
+    Danh sách phòng
+{% endblock %}
 
-    <meta charset="UTF-8">
+{% block extra_css %}
 
-    <title>Quản lý phòng</title>
+<link
+    rel="stylesheet"
+    href="{% static 'css/room_list.css' %}"
+>
 
-    {% load static %}
-    {% load room_filters %}
+{% endblock %}
 
-    <link
-        rel="stylesheet"
-        href="{% static 'css/room_list.css' %}"
-    >
-
-</head>
-
-
-<body>
-
+{% block content %}
 
 <!-- HEADER -->
-
-<div class="header">
-
-    <div class="logo">
-        Phòng trọ
-    </div>
-
-</div>
 
 
 <div class="container">
 
 
     <h1 class="title">
-        BÁN PHÒNG
+        DANH SÁCH PHÒNG
     </h1>
 
 
@@ -264,7 +252,7 @@
 
                         <!-- ĐỊA CHỈ -->
 
-                        <div>
+                        <div class="room-address">
 
                             📍 {{ room.address }},
                             {{ room.ward.name }},
@@ -360,7 +348,7 @@
 
                     <div>
 
-
+                        {% if perms.rooms.change_room %}
                         <a
                             href="{% url 'edit_room' room.id %}"
                             class="edit-button"
@@ -369,8 +357,9 @@
                             Sửa
 
                         </a>
+                        {% endif %}
 
-
+                        {% if perms.rooms.delete_room %}
                         <a
                             href="{% url 'delete_room' room.id %}"
                             class="delete-button"
@@ -379,7 +368,7 @@
                             Xóa
 
                         </a>
-
+                        {% endif %}
 
                     </div>
 
@@ -412,7 +401,7 @@
 
 
 <!-- ADD ROOM BUTTON -->
-
+{% if perms.rooms.add_room %}
 <a
     href="{% url 'add_room' %}"
     class="add-room"
@@ -421,11 +410,8 @@
     ＋ Thêm phòng
 
 </a>
-
+{% endif %}
 
 <script src="{% static 'js/room_list.js' %}"></script>
 
-
-</body>
-
-</html>
+{% endblock %}

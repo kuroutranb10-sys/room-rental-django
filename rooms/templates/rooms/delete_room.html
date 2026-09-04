@@ -1,83 +1,143 @@
-<!DOCTYPE html>
+{% extends 'rooms/base.html' %}
 
-<html lang="vi">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <title>Xóa phòng</title>
-
-    {% load static %}
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/delete_room.css' %}"
-    >
-
-</head>
+{% load static %}
+{% load room_filters %}
 
 
-<body>
+{% block title %}
+    Xóa phòng
+{% endblock %}
 
 
-<div class="container">
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/delete_room.css' %}"
+>
+
+{% endblock %}
 
 
-    <div class="box">
+{% block content %}
+
+<div class="delete-container">
+
+    <div class="delete-box">
+
+        <!-- ICON -->
+
+        <div class="delete-icon">
+            🗑️
+        </div>
 
 
-        <h2>
-            ⚠️ XÓA PHÒNG
-        </h2>
+        <!-- TITLE -->
+
+        <h1>
+            Xóa phòng
+        </h1>
 
 
-        <p>
-            Bạn có chắc muốn xóa phòng:
+        <p class="warning-text">
+            Bạn có chắc chắn muốn xóa phòng này không?
         </p>
 
 
-        <div class="room-name">
+        <!-- ROOM INFORMATION -->
 
-            {{ room.name }}
+        <div class="room-info">
+
+            <div class="info-row">
+
+                <span>
+                    Tên phòng
+                </span>
+
+                <strong>
+                    {{ room.name }}
+                </strong>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span>
+                    Địa chỉ
+                </span>
+
+                <strong>
+                    {{ room.address }}
+                </strong>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <span>
+                    Giá phòng
+                </span>
+
+                <strong class="price">
+                    {{ room.price|money }} VNĐ/tháng
+                </strong>
+
+            </div>
 
         </div>
 
 
-        <div class="buttons">
+        <!-- WARNING -->
 
+        <div class="delete-warning">
+
+            <span class="warning-icon">
+                ⚠️
+            </span>
+
+            <span>
+                Hành động này không thể hoàn tác.
+            </span>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="delete-buttons">
 
             <a
                 href="{% url 'room_list' %}"
                 class="button cancel-button"
             >
-                HỦY
+                ← Hủy
             </a>
 
 
-            <form method="POST">
+            <form
+                method="POST"
+                action="{% url 'delete_room' room.id %}"
+                id="delete-room-form"
+            >
 
                 {% csrf_token %}
 
                 <button
                     type="submit"
                     class="button delete-button"
+                    id="delete-room-button"
                 >
-                    XÓA PHÒNG
+                    🗑️ Xóa phòng
                 </button>
 
             </form>
 
-
         </div>
-
 
     </div>
 
-
 </div>
 
-
-</body>
-
-</html>
+{% endblock %}

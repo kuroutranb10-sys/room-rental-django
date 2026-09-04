@@ -1,0 +1,177 @@
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #333;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    min-height: 65px;
+
+    background: #0878e8;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 32px;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.12);
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.logo {
+    font-family: Georgia, serif;
+
+    font-size: 28px;
+    font-weight: bold;
+
+    white-space: nowrap;
+
+    color: white;
+    text-decoration: none;
+
+    transition: opacity 0.2s;
+}
+
+.logo:hover {
+    opacity: 0.9;
+}
+
+
+/* =========================
+   HEADER RIGHT
+========================= */
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* =========================
+   HEADER LINKS
+========================= */
+
+.header-right a {
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    padding: 9px 14px;
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.35);
+
+    border-radius: 6px;
+
+    transition:
+        background 0.2s,
+        border-color 0.2s;
+}
+
+.header-right a:hover {
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    border-color:
+        rgba(255, 255, 255, 0.6);
+}
+
+
+/* =========================
+   USER
+========================= */
+
+.user-info {
+    color: white;
+
+    font-size: 14px;
+
+    padding: 9px 12px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    border-radius: 6px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+main {
+    min-height: calc(100vh - 65px);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .header {
+        padding: 10px 15px;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 10px;
+    }
+
+
+    .logo {
+        text-align: center;
+
+        font-size: 25px;
+    }
+
+
+    .header-right {
+        justify-content: center;
+
+        flex-wrap: wrap;
+    }
+
+
+    .header-right a {
+        font-size: 13px;
+
+        padding: 7px 10px;
+    }
+
+
+    .user-info {
+        font-size: 13px;
+
+        padding: 7px 10px;
+    }
+}

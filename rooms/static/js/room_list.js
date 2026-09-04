@@ -1,18 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    const citySelect =
-        document.getElementById('filter_city');
-
-    const wardSelect =
-        document.getElementById('filter_ward');
-
+    const citySelect = document.getElementById('filter_city');
+    const wardSelect = document.getElementById('filter_ward');
 
     if (!citySelect || !wardSelect) {
+        console.error('Không tìm thấy city hoặc ward.');
+        return;
+    }
 
-        console.error(
-            'Không tìm thấy city hoặc ward.'
-        );
 
+    // =========================
+    // URL API LẤY PHƯỜNG/XÃ
+    // =========================
+
+    const wardsUrl = wardSelect.dataset.url;
+
+    if (!wardsUrl) {
+        console.error('Không tìm thấy URL API phường/xã.');
         return;
     }
 
@@ -23,33 +27,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function resetWard() {
 
-        wardSelect.value = '';
+        wardSelect.innerHTML =
+            '<option value="">Tất cả</option>';
 
         wardSelect.disabled = true;
-
-        const options =
-            wardSelect.querySelectorAll(
-                'option[data-city]'
-            );
-
-        options.forEach(function (option) {
-
-            option.hidden = true;
-
-        });
-
     }
 
 
     // =========================
-    // LỌC PHƯỜNG/XÃ THEO TỈNH
+    // LẤY PHƯỜNG/XÃ THEO TỈNH
     // =========================
 
-    function filterWards() {
-
-        const cityId =
-            citySelect.value;
-
+    function loadWards(cityId, selectedWard = '') {
 
         if (!cityId) {
 
@@ -59,62 +48,89 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        wardSelect.disabled = false;
+        wardSelect.disabled = true;
+
+        wardSelect.innerHTML =
+            '<option value="">Đang tải...</option>';
 
 
-        const options =
-            wardSelect.querySelectorAll(
-                'option[data-city]'
-            );
+        fetch(`${wardsUrl}?city_id=${cityId}`)
+
+            .then(function (response) {
+
+                if (!response.ok) {
+                    throw new Error(
+                        `HTTP error: ${response.status}`
+                    );
+                }
+
+                return response.json();
+
+            })
+
+            .then(function (data) {
+
+                wardSelect.innerHTML =
+                    '<option value="">Tất cả</option>';
 
 
-        options.forEach(function (option) {
+                data.forEach(function (ward) {
 
-            if (
-                option.dataset.city === cityId
-            ) {
+                    const option =
+                        document.createElement('option');
 
-                option.hidden = false;
+                    option.value = ward.id;
 
-            } else {
-
-                option.hidden = true;
-
-            }
-
-        });
+                    option.textContent = ward.name;
 
 
-        const current =
-            wardSelect.options[
-                wardSelect.selectedIndex
-            ];
+                    if (
+                        String(ward.id) ===
+                        String(selectedWard)
+                    ) {
+
+                        option.selected = true;
+
+                    }
 
 
-        if (
-            current &&
-            current.dataset.city &&
-            current.dataset.city !== cityId
-        ) {
+                    wardSelect.appendChild(option);
 
-            wardSelect.value = '';
+                });
 
-        }
 
+                wardSelect.disabled = false;
+
+            })
+
+            .catch(function (error) {
+
+                console.error(
+                    'Lỗi khi tải phường/xã:',
+                    error
+                );
+
+
+                wardSelect.innerHTML =
+                    '<option value="">Không thể tải dữ liệu</option>';
+
+                wardSelect.disabled = true;
+
+            });
     }
 
 
     // =========================
-    // CHỌN TỈNH
+    // CHỌN TỈNH/THÀNH PHỐ
     // =========================
 
     citySelect.addEventListener(
         'change',
         function () {
 
-            wardSelect.value = '';
+            const cityId = citySelect.value;
 
-            filterWards();
+            loadWards(cityId);
 
         }
     );
@@ -137,21 +153,19 @@ document.addEventListener('DOMContentLoaded', function () {
         params.get('ward');
 
 
+    // Nếu URL có tỉnh
     if (selectedCity) {
 
-        citySelect.value =
-            selectedCity;
+        citySelect.value = selectedCity;
 
-    }
+        loadWards(
+            selectedCity,
+            selectedWard
+        );
 
+    } else {
 
-    filterWards();
-
-
-    if (selectedWard) {
-
-        wardSelect.value =
-            selectedWard;
+        resetWard();
 
     }
 

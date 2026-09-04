@@ -70,6 +70,38 @@ class RoomForm(forms.ModelForm):
                     'id': 'id_ward'
                 }
             ),
+
+            'price': forms.TextInput(
+                attrs={
+                    'id': 'id_price',
+                    'inputmode': 'numeric',
+                    'autocomplete': 'off',
+                }
+            ),
+
+            'electricity_price': forms.TextInput(
+                attrs={
+                    'id': 'id_electricity_price',
+                    'inputmode': 'numeric',
+                    'autocomplete': 'off',
+                }
+            ),
+
+            'water_price': forms.TextInput(
+                attrs={
+                    'id': 'id_water_price',
+                    'inputmode': 'numeric',
+                    'autocomplete': 'off',
+                }
+            ),
+
+            'deposit': forms.TextInput(
+                attrs={
+                    'id': 'id_deposit',
+                    'inputmode': 'numeric',
+                    'autocomplete': 'off',
+                }
+            ),
         }
 
 

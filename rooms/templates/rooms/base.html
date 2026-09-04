@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+            Phòng trọ
+        {% endblock %}
+    </title>
+
+    {% load static %}
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/base.css' %}"
+    >
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+
+    <!-- LOGO -->
+
+    <a href="{% url 'room_list' %}" class="logo">
+
+        🏠 Phòng trọ
+
+    </a>
+
+
+    <!-- NAVIGATION -->
+
+    <nav class="header-right">
+
+
+        {% if user.is_authenticated %}
+
+
+            <!-- DASHBOARD -->
+
+            {% if perms.rooms.view_dashboard %}
+
+                <a href="{% url 'dashboard' %}">
+                    📊 Dashboard
+                </a>
+
+            {% endif %}
+
+
+            <!-- ROOM LIST -->
+
+            <a href="{% url 'room_list' %}">
+                🏠 Danh sách phòng
+            </a>
+
+
+            <!-- USER -->
+
+            <span class="user-info">
+
+                👤 {{ user.username }}
+
+            </span>
+
+
+            <!-- LOGOUT -->
+
+            <a href="{% url 'logout' %}">
+                🚪 Đăng xuất
+            </a>
+
+
+        {% else %}
+
+
+            <!-- LOGIN -->
+
+            <a href="{% url 'login' %}">
+                🔐 Đăng nhập
+            </a>
+
+
+        {% endif %}
+
+
+    </nav>
+
+
+</header>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<main>
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+{% block extra_js %}
+{% endblock %}
+
+
+</body>
+
+</html>

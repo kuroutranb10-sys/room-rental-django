@@ -1,35 +1,25 @@
-    <!DOCTYPE html>
-    <html lang="vi">
+{% extends 'rooms/base.html' %}
 
-    <head>
+{% load static %}
+{% load room_filters %}
 
-        <meta charset="UTF-8">
-
-        <title>
-            Chi tiết phòng - {{ room.name }}
-        </title>
-
-        {% load static %}
-        {% load room_filters %}
-
-        <link
-            rel="stylesheet"
-            href="{% static 'css/room_detail.css' %}"
-        >
-
-    </head>
+{% block title %}
+    Chi tiết phòng
+{% endblock %}
 
 
-    <body>
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/room_detail.css' %}"
+>
+
+{% endblock %}
 
 
-    <div class="header">
+{% block content %}
 
-        <div class="logo">
-            Phòng trọ
-        </div>
-
-    </div>
 
 
     <div class="container">
@@ -343,14 +333,14 @@
                     ← Quay lại
                 </a>
 
-
+                {% if perms.rooms.change_room %}
                 <a
                     href="{% url 'edit_room' room.id %}"
                     class="button edit-button"
                 >
                     ✏️ Sửa phòng
                 </a>
-
+                {% endif %}
 
             </div>
 
@@ -359,8 +349,4 @@
 
 
     </div>
-
-
-    </body>
-
-    </html>
+{% endblock %}

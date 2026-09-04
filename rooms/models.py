@@ -149,6 +149,14 @@ class Room(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        permissions = [
+            (
+                'view_dashboard',
+                'Can view dashboard'
+            ),
+        ]
+
     def __str__(self):
         return self.name
 

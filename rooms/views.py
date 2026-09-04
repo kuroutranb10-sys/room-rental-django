@@ -57,7 +57,7 @@ def logout_view(request):
 
     logout(request)
 
-    return redirect('login')
+    return redirect('room_list')
 
 
 # =========================================================
@@ -86,7 +86,6 @@ def get_wards(request):
 # =========================================================
 # DANH SÁCH PHÒNG
 # =========================================================
-@login_required
 def room_list(request):
 
     rooms = Room.objects.all()
@@ -200,6 +199,9 @@ def room_list(request):
 @login_required
 def add_room(request):
 
+    if not request.user.has_perm('rooms.add_room'):
+        return redirect('dashboard')
+
     if request.method == 'POST':
 
         form = RoomForm(
@@ -241,6 +243,9 @@ def add_room(request):
 # =========================================================
 @login_required
 def edit_room(request, room_id):
+
+    if not request.user.has_perm('rooms.change_room'):
+        return redirect('dashboard')
 
     room = get_object_or_404(
         Room,
@@ -293,6 +298,12 @@ def edit_room(request, room_id):
 @login_required
 def delete_room_image(request, room_id, image_id):
 
+    if not request.user.has_perm('rooms.change_room'):
+        return JsonResponse({
+            'success': False,
+            'message': 'Bạn không có quyền xóa ảnh.'
+        }, status=403)
+
     room = get_object_or_404(
         Room,
         id=room_id
@@ -329,6 +340,8 @@ def delete_room(request, room_id):
         id=room_id
     )
 
+    if not request.user.has_perm('rooms.delete_room'):
+        return redirect('dashboard')
 
     if request.method == 'POST':
 
@@ -348,7 +361,6 @@ def delete_room(request, room_id):
 # =========================================================
 # CHI TIẾT PHÒNG
 # =========================================================
-@login_required
 def room_detail(request, room_id):
 
     room = get_object_or_404(
@@ -371,6 +383,11 @@ def room_detail(request, room_id):
 
 @login_required
 def dashboard(request):
+
+    if not request.user.has_perm(
+            'rooms.view_dashboard'
+    ):
+        return redirect('room_list')
 
     rooms = Room.objects.all()
 

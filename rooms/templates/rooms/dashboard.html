@@ -1,55 +1,24 @@
-<!DOCTYPE html>
-<html lang="vi">
+{% extends 'rooms/base.html' %}
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <title>
-        Dashboard - Quản lý phòng
-    </title>
-
-    {% load static %}
-
-    <link
-        rel="stylesheet"
-        href="{% static 'css/dashboard.css' %}"
-    >
-
-</head>
+{% load static %}
 
 
-<body>
+{% block title %}
+    Dashboard - Quản lý phòng
+{% endblock %}
 
 
-<!-- =========================
-     HEADER
-========================= -->
+{% block extra_css %}
 
-<div class="header">
+<link
+    rel="stylesheet"
+    href="{% static 'css/dashboard.css' %}"
+>
 
-    <div class="logo">
-        Phòng trọ
-    </div>
+{% endblock %}
 
 
-    <div class="header-right">
-
-        <a href="{% url 'room_list' %}">
-            🏠 Danh sách phòng
-        </a>
-
-        <a
-            href="{% url 'logout' %}"
-            class="logout-button"
-        >
-            🚪 Đăng xuất
-        </a>
-
-    </div>
-
-</div>
-
+{% block content %}
 
 <div class="container">
 
@@ -550,7 +519,6 @@
 
 <div class="quick-actions">
 
-
     <a
         href="{% url 'room_list' %}"
         class="quick-card"
@@ -602,29 +570,23 @@
 
     {% endif %}
 
-
 </div>
 
-
 </div>
+{% endblock %}
 
 
-<!-- =========================
-     CHART.JS
-========================= -->
+{% block extra_js %}
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 
 <script>
 
     const availableRooms =
         {{ available_rooms|default:0 }};
 
-
     const rentedRooms =
         {{ rented_rooms|default:0 }};
-
 
     const reservedRooms =
         {{ reserved_rooms|default:0 }};
@@ -660,9 +622,7 @@
                                 availableRooms,
                                 rentedRooms,
                                 reservedRooms
-                            ],
-
-                            borderWidth: 2
+                            ]
 
                         }
 
@@ -686,11 +646,11 @@
 
                             labels: {
 
-                                padding: 18,
+                                padding: 20,
 
                                 font: {
 
-                                    size: 13
+                                    size: 14
 
                                 }
 
@@ -709,7 +669,4 @@
 
 </script>
 
-
-</body>
-
-</html>
+{% endblock %}
