@@ -10,6 +10,15 @@ class Command(BaseCommand):
 
     help = 'Import dữ liệu tỉnh/thành phố và phường/xã từ JSON'
 
+    def add_arguments(self, parser):
+
+        parser.add_argument(
+
+            '--dry-run',
+            action='store_true',
+            help='Chỉ kiểm tra JSON, không ghi vào database.'
+        )
+
     def handle(self, *args, **options):
 
         # =====================================================
