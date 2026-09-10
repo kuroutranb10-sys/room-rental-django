@@ -282,47 +282,249 @@ h1 {
 ========================= */
 
 .current-image {
-    margin-top: 20px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    padding: 22px;
+    background: #ffffff;
+    border: 1px solid #e1e7ee;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
 
-    margin-bottom: 20px;
 
-    padding: 15px;
+/* HEADER */
 
-    background: #fafbfc;
+.current-image-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 18px;
+}
 
-    border: 1px solid #e1e5e9;
+
+.current-image-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+.image-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eaf4ff;
+    border-radius: 10px;
+
+    font-size: 21px;
+}
+
+
+.current-image-heading strong {
+    display: block;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color: #202b36;
+
+    margin-bottom: 4px;
+}
+
+
+.current-image-heading small {
+    display: block;
+
+    font-size: 13px;
+    color: #7a8794;
+}
+
+
+/* VIEW IMAGE BUTTON */
+
+.view-image-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 9px 15px;
+
+    background: #0878e8;
+    color: white;
 
     border-radius: 7px;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition: 0.2s ease;
 }
 
 
-.current-image label {
-    display: block;
-
-    font-weight: bold;
-
-    margin-bottom: 10px;
-
-    color: #333;
-
-    font-size: 15px;
+.view-image-button:hover {
+    background: #0668cc;
 }
 
 
-.current-image img {
+/* IMAGE PREVIEW */
+
+.current-image-preview {
+    width: 100%;
+
+    padding: 10px;
+
+    background: #f5f7fa;
+
+    border: 1px solid #e3e8ee;
+
+    border-radius: 10px;
+
+    box-sizing: border-box;
+}
+
+
+.current-image-preview img {
     display: block;
 
-    width: 220px;
+    width: 100%;
+    max-width: 500px;
 
-    height: 165px;
+    height: 280px;
 
     object-fit: cover;
 
-    border-radius: 7px;
+    margin: 0 auto;
 
-    border: 1px solid #d0d5da;
+    border-radius: 8px;
 }
 
+
+/* =========================
+   IMAGE UPLOAD
+========================= */
+
+.image-upload-section {
+    margin-top: 25px;
+
+    padding: 22px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e1e7ee;
+
+    border-radius: 12px;
+}
+
+
+.image-upload-heading {
+    margin-bottom: 15px;
+}
+
+
+.image-upload-heading strong {
+    display: block;
+
+    color: #202b36;
+
+    font-size: 15px;
+
+    margin-bottom: 5px;
+}
+
+
+.image-upload-heading small {
+    color: #7a8794;
+
+    font-size: 13px;
+}
+
+
+/* FILE INPUT */
+
+.file-input-wrapper {
+    width: 100%;
+}
+
+
+.file-input-wrapper input[type="file"] {
+    width: 100%;
+
+    padding: 10px;
+
+    background: white;
+
+    border: 1px solid #d6dde5;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+}
+
+
+.file-input-wrapper input[type="file"]::file-selector-button {
+    padding: 9px 16px;
+
+    margin-right: 12px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #0878e8;
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.file-input-wrapper input[type="file"]::file-selector-button:hover {
+    background: #0668cc;
+}
+
+
+/* CLEAR IMAGE */
+
+.clear-image {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 14px;
+
+    color: #687583;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+
+.clear-image input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+
+    cursor: pointer;
+}
 
 /* =========================
    CURRENT SECONDARY IMAGES
@@ -784,6 +986,40 @@ input[type="file"]::file-selector-button {
 
     .button {
         width: 100%;
+    }
+
+}
+
+/* =========================
+   IMAGE RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    .current-image {
+        padding: 16px;
+    }
+
+
+    .current-image-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+
+    .view-image-button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    .current-image-preview img {
+        height: 220px;
+    }
+
+
+    .image-upload-section {
+        padding: 16px;
     }
 
 }

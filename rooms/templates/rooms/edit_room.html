@@ -516,23 +516,60 @@
 
 
             <!-- =========================
-                 ẢNH CHÍNH HIỆN TẠI
+            ẢNH CHÍNH HIỆN TẠI
             ========================= -->
 
             {% if room.image %}
 
                 <div class="current-image">
 
-                    <label>
-                        Hình ảnh chính hiện tại:
-                    </label>
 
-                    <br>
+                    <div class="current-image-header">
 
-                    <img
-                        src="{{ room.image.url }}"
-                        alt="Ảnh phòng"
-                    >
+
+                        <div class="current-image-heading">
+
+                            <span class="image-icon">
+                                🖼️
+                            </span>
+
+
+                            <div>
+
+                                <strong>
+                                    Hình ảnh chính hiện tại
+                                </strong>
+
+                            <small>
+                                Ảnh đang được sử dụng cho phòng
+                            </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="{{ room.image.url }}"
+                            target="_blank"
+                            class="view-image-button"
+                        >
+                            Xem ảnh
+                        </a>
+
+
+                    </div>
+
+
+                    <div class="current-image-preview">
+
+                        <img
+                            src="{{ room.image.url }}"
+                            alt="Ảnh phòng"
+                        >
+
+                    </div>
+
 
                 </div>
 
@@ -540,16 +577,63 @@
 
 
             <!-- =========================
-                 THAY ẢNH CHÍNH
+                    THAY ẢNH CHÍNH
             ========================= -->
+            <div class="image-upload-section">
 
-            <div class="form-group">
 
-                <label>
-                    Thay hình ảnh chính
-                </label>
+                <div class="image-upload-heading">
 
-                {{ form.image }}
+                    <div>
+
+                        <strong>
+                            Thay hình ảnh chính
+                        </strong>
+
+                        <small>
+                            Chọn một ảnh mới nếu muốn thay ảnh hiện tại
+                        </small>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="file-input-wrapper">
+
+                    <input
+                        type="file"
+                        name="{{ form.image.name }}"
+                        id="{{ form.image.id_for_label }}"
+                        accept="image/*"
+                    >
+
+                </div>
+
+
+                {% if room.image %}
+
+                    <div class="clear-image">
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                name="image-clear"
+                                id="image-clear"
+                            >
+
+                            <span>
+                                Xóa hình ảnh hiện tại
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                {% endif %}
+
 
                 {% if form.image.errors %}
 
@@ -564,6 +648,7 @@
                     </div>
 
                 {% endif %}
+
 
             </div>
 
