@@ -63,6 +63,16 @@
                     class="main-image"
                 >
 
+                <button
+                    type="button"
+                    class="share-image-button"
+                    data-image-url="{{ room.image.url }}"
+                    aria-label="Chia sẻ ảnh"
+                    title="Chia sẻ ảnh"
+                >
+                    📤
+                </button>
+
             </div>
 
         {% else %}
@@ -90,6 +100,16 @@
                             src="{{ room_image.image.url }}"
                             alt="{{ room.name }}"
                         >
+
+                        <button
+                            type="button"
+                            class="share-image-button"
+                            data-image-url="{{ room_image.image.url }}"
+                            aria-label="Chia sẻ ảnh"
+                            title="Chia sẻ ảnh"
+                        >
+                            📤
+                        </button>
 
                     </div>
 
@@ -315,6 +335,21 @@
 
                     {% endif %}
 
+                    {% if room.has_wardrobe %}
+
+                        <div class="amenity active">
+                            🗄️ Tủ đồ
+                        </div>
+
+                    {% endif %}
+
+                    {% if room.has_table_chairs %}
+
+                        <div class="amenity active">
+                            🪑 Bàn ghế
+                        </div>
+
+                    {% endif %}
 
                 </div>
 
@@ -349,4 +384,10 @@
 
 
     </div>
+{% endblock %}
+
+{% block extra_js %}
+
+<script src="{% static 'js/room_detail.js' %}"></script>
+
 {% endblock %}
