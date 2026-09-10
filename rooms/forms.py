@@ -52,6 +52,8 @@ class RoomForm(forms.ModelForm):
             'has_bed',
             'has_tv',
             'has_refrigerator',
+            'has_wardrobe',
+            'has_table_chairs',
 
             'image',
             'status',

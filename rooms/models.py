@@ -128,6 +128,8 @@ class Room(models.Model):
     has_bed = models.BooleanField(default=False)
     has_tv = models.BooleanField(default=False)
     has_refrigerator = models.BooleanField(default=False)
+    has_wardrobe = models.BooleanField(default=False)
+    has_table_chairs = models.BooleanField(default=False)
 
     image = models.ImageField(
         upload_to='rooms/',
