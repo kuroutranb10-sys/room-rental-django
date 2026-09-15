@@ -8,6 +8,12 @@
 
 body {
     margin: 0;
+
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
     font-family: Arial, sans-serif;
     background: #f4f6f8;
     color: #333;
@@ -127,7 +133,7 @@ body {
 ========================= */
 
 main {
-    min-height: calc(100vh - 65px);
+    flex: 1;
 }
 
 
@@ -174,4 +180,219 @@ main {
 
         padding: 7px 10px;
     }
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.site-footer {
+    background: #0878e8;
+
+    color: white;
+
+    margin-top: 50px;
+}
+
+
+/* =========================
+   FOOTER CONTAINER
+========================= */
+
+.footer-container {
+    width: 1000px;
+
+    max-width: calc(100% - 40px);
+
+    margin: 0 auto;
+
+    padding: 40px 0;
+
+    display: grid;
+
+    grid-template-columns:
+        1.5fr
+        1fr
+        1fr;
+
+    gap: 50px;
+}
+
+
+/* =========================
+   FOOTER COLUMN
+========================= */
+
+.footer-column h3 {
+    margin: 0 0 16px;
+
+    font-size: 16px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   FOOTER LOGO
+========================= */
+
+.footer-logo {
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-family: Georgia, serif;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    transition: opacity 0.2s;
+}
+
+.footer-logo:hover {
+    opacity: 0.9;
+}
+
+
+/* =========================
+   FOOTER ABOUT
+========================= */
+
+.footer-about p {
+    max-width: 320px;
+
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.9);
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================
+   FOOTER LINKS
+========================= */
+
+.footer-links {
+    list-style: none;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+
+.footer-links a {
+    color:
+        rgba(255, 255, 255, 0.9);
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    transition:
+        color 0.2s,
+        padding-left 0.2s;
+}
+
+
+.footer-links a:hover {
+    color: white;
+
+    padding-left: 4px;
+}
+
+
+/* =========================
+   FOOTER CONTACT
+========================= */
+
+.footer-contact {
+    list-style: none;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+
+.footer-contact li {
+    margin-bottom: 10px;
+
+    color:
+        rgba(255, 255, 255, 0.9);
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   FOOTER BOTTOM
+========================= */
+
+.footer-bottom {
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.2);
+
+    padding: 16px 20px;
+
+    text-align: center;
+}
+
+
+.footer-bottom p {
+    margin: 0;
+
+    color:
+        rgba(255, 255, 255, 0.8);
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .footer-container {
+        grid-template-columns: 1fr;
+
+        gap: 28px;
+
+        padding: 35px 0;
+    }
+
+
+    .footer-about p {
+        max-width: none;
+    }
+
+
+    .footer-column {
+        text-align: center;
+    }
+
+
+    .footer-links a:hover {
+        padding-left: 0;
+    }
+
 }
