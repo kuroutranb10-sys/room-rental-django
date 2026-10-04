@@ -597,15 +597,6 @@ h1 {
 
 @media (max-width: 600px) {
 
-    .header {
-        height: 60px;
-
-        padding: 0 20px;
-
-        font-size: 25px;
-    }
-
-
     .container {
         max-width: calc(100% - 20px);
 
